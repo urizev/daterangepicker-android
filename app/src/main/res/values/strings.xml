@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DateRangePickerApp</string>
+    <string name="show_dialog">Show dialog</string>
 </resources>

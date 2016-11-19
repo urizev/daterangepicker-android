@@ -11,8 +11,124 @@ public class DateRange {
     private Calendar to;
 
     public DateRange() {
-        this.setFrom(Calendar.getInstance());
-        this.setTo(Calendar.getInstance());
+        this(Calendar.getInstance(), Calendar.getInstance());
+    }
+
+    public DateRange(Calendar from, Calendar to) {
+        this.setFrom(from);
+        this.setTo(to);
+    }
+
+    public static DateRange today() {
+        return new DateRange();
+    }
+
+    public static DateRange yesterday () {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        return new DateRange(cal, cal);
+    }
+
+    public static DateRange tomorrow () {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 1);
+        return new DateRange(cal, cal);
+    }
+
+    public static DateRange nextWeekend() {
+        DateRange range = new DateRange();
+        Calendar cal = Calendar.getInstance();
+
+        cal.add(Calendar.DATE, Calendar.FRIDAY - cal.get(Calendar.DAY_OF_WEEK));
+        range.setFrom(cal);
+
+        cal.add(Calendar.DATE, 2);
+        range.setTo(cal);
+
+        return range;
+    }
+
+    public static DateRange currentWeek() {
+        DateRange range = new DateRange();
+        Calendar cal = Calendar.getInstance();
+
+        int daysToMonday = cal.getFirstDayOfWeek() - cal.get(Calendar.DAY_OF_WEEK);
+        cal.add(Calendar.DATE, daysToMonday);
+        range.setFrom(cal);
+        cal.add(Calendar.DATE, 6);
+        range.setTo(cal);
+
+        return range;
+    }
+
+    public static DateRange nextWeek() {
+        DateRange range = new DateRange();
+        Calendar cal = Calendar.getInstance();
+
+        int daysToMonday = cal.getFirstDayOfWeek() - cal.get(Calendar.DAY_OF_WEEK);
+        daysToMonday = daysToMonday > 0 ? daysToMonday : 7 + daysToMonday;
+        cal.add(Calendar.DATE, daysToMonday);
+        range.setFrom(cal);
+        cal.add(Calendar.DATE, 6);
+        range.setTo(cal);
+
+        return range;
+    }
+
+    public static DateRange currentMonth() {
+        DateRange range = new DateRange();
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        range.setFrom(cal);
+        cal.add(Calendar.MONTH, 1);
+        cal.add(Calendar.DATE, -1);
+        range.setTo(cal);
+
+        return range;
+    }
+
+    public static DateRange nextMonth() {
+        DateRange range = new DateRange();
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.add(Calendar.MONTH, 1);
+        range.setFrom(cal);
+        cal.add(Calendar.MONTH, 1);
+        cal.add(Calendar.DATE, -1);
+        range.setTo(cal);
+
+        return range;
+    }
+
+    public static DateRange nextYear() {
+        DateRange range = new DateRange();
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.MONTH, 1);
+        cal.add(Calendar.YEAR, 1);
+        range.setFrom(cal);
+        cal.add(Calendar.YEAR, 1);
+        cal.add(Calendar.DATE, -1);
+        range.setTo(cal);
+
+        return range;
+    }
+
+    public static DateRange currentYear() {
+        DateRange range = new DateRange();
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.MONTH, 1);
+        range.setFrom(cal);
+        cal.add(Calendar.YEAR, 1);
+        cal.add(Calendar.DATE, -1);
+        range.setTo(cal);
+
+        return range;
     }
 
     public void setFrom(Calendar from) {
