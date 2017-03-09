@@ -120,7 +120,7 @@ public class MonthView extends View {
         float y = rowHeight * 1.5f;
 
         cellInfo.currentMonth.setTimeInMillis(calendar.getTimeInMillis());
-        reusableToFirstCellDay(cellInfo.day);
+        reusableCalendarToFirstCellDay(cellInfo.day);
 
         int numCells = weekDayCount * numRows;
         for (int i = 0; i < numCells; ++i) {
@@ -135,7 +135,7 @@ public class MonthView extends View {
         }
     }
 
-    private void reusableToFirstCellDay(Calendar reusableCalendar) {
+    private void reusableCalendarToFirstCellDay(Calendar reusableCalendar) {
         reusableCalendar.setTimeInMillis(calendar.getTimeInMillis());
         reusableCalendar.set(Calendar.DAY_OF_MONTH, 1);
         int weekdayOfFirstDay = reusableCalendar.get(Calendar.DAY_OF_WEEK);
@@ -161,7 +161,7 @@ public class MonthView extends View {
             float y = event.getY() - rowHeight - getPaddingTop();
 
             if (y >= 0) {
-                reusableToFirstCellDay(reusableCalendar);
+                reusableCalendarToFirstCellDay(reusableCalendar);
 
                 float paddingEnd = ViewCompat.getPaddingEnd(this);
                 float dayWidth = (this.width - paddingStart - paddingEnd) / weekDayCount;

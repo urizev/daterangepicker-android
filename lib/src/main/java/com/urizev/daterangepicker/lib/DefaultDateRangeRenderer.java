@@ -42,13 +42,14 @@ public class DefaultDateRangeRenderer implements DateRangeView.DateRangeRenderer
         int selectionColor;
         try {
             selectionColor = a.getColor(0, 0);
-            eventColor = a.getColor(1, 0);
+            eventColor = 0xffC5E1A5; //a.getColor(1, 0);
             unselectedTextColor = a.getColor(2, 0);
             selectedTextColor = a.getColor(3, 0);
             weekDayLabelTextColor = a.getColor(4, 0);
         } finally {
             a.recycle();
         }
+
 
         monthDayPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         monthDayPaint.setTextAlign(Paint.Align.CENTER);
@@ -59,7 +60,6 @@ public class DefaultDateRangeRenderer implements DateRangeView.DateRangeRenderer
         weekDayLabelPaint.setTextSize(textSize);
         weekDayLabelPaint.setColor(weekDayLabelTextColor);
         weekDayLabelPaint.setTextAlign(Paint.Align.CENTER);
-
 
         this.selectionPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         selectionPaint.setColor(selectionColor);
@@ -81,10 +81,12 @@ public class DefaultDateRangeRenderer implements DateRangeView.DateRangeRenderer
         boolean isInRange = dateRange.isInRange(cellInfo.day);
         boolean hasEvents = Math.random() > 0.5;
         float radius = Math.min(cellInfo.cell.width(), cellInfo.cell.height()) / 2;
-        float topOffset = cellInfo.cell.height() - radius * 2;
-        float leftOffset = cellInfo.cell.width() - radius * 2;
         float x = cellInfo.cell.centerX();
         float y = cellInfo.cell.centerY();
+        boolean belongsToMonth = CalendarUtils.belongsToMonth(cellInfo.day, cellInfo.currentMonth);
+
+        float topOffset = cellInfo.cell.height() - radius * 2;
+        float leftOffset = cellInfo.cell.width() - radius * 2;
         if (isInRange) {
             boolean isFrom = CalendarUtils.isSameDay(dateRange.getFrom(), cellInfo.day);
             boolean isTo = CalendarUtils.isSameDay(dateRange.getTo(), cellInfo.day);
@@ -106,21 +108,30 @@ public class DefaultDateRangeRenderer implements DateRangeView.DateRangeRenderer
                 canvas.drawRect(rectf, selectionPaint);
             }
 
-            monthDayPaint.setColor(selectedTextColor);
+            //monthDayPaint.setColor(selectedTextColor);
             monthDayPaint.setFakeBoldText(true);
         }
         else {
-            monthDayPaint.setColor(unselectedTextColor);
+            //monthDayPaint.setColor(unselectedTextColor);
             monthDayPaint.setFakeBoldText(false);
         }
 
-        if (CalendarUtils.belongsToMonth(cellInfo.day, cellInfo.currentMonth)) {
-            canvas.drawText(DAY_FORMAT.format(cellInfo.day.getTime()), x, y - textHeight, monthDayPaint);
 
+        if (belongsToMonth) {
             if (hasEvents) {
-                monthDayPaint.setColor(isInRange ? selectedTextColor : eventColor);
-                canvas.drawCircle(x, y + radius / 2, 6, monthDayPaint);
+                float sradius = radius * 1.4f;
+                topOffset = cellInfo.cell.height() - sradius;
+                leftOffset = cellInfo.cell.width() - sradius;
+
+                rectf.set(0, 0, sradius, sradius);
+                rectf.offset(cellInfo.cell.left + leftOffset / 2, cellInfo.cell.top + topOffset / 2);
+                monthDayPaint.setColor(isInRange ? 0x77ffffff : eventColor);
+                canvas.drawOval(rectf, monthDayPaint);
             }
+
+            //monthDayPaint.setTypeface(hasEvents ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
+            monthDayPaint.setColor(unselectedTextColor);
+            canvas.drawText(DAY_FORMAT.format(cellInfo.day.getTime()), x, y - textHeight, monthDayPaint);
         }
     }
 

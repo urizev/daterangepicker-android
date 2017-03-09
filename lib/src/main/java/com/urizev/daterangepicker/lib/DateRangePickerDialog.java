@@ -33,19 +33,20 @@ public class DateRangePickerDialog extends MaterialDialog implements DateRangeVi
     private final View calendarFrame;
     private final DateRangeView calendarRange;
     private final TextView calendarHeader;
+    private final RecyclerView recycler;
     private DateRange dateRange;
 
     protected DateRangePickerDialog(Builder builder) {
         super(builder);
 
-        fromDay = (TextView) this.customViewFrame.findViewById(R.id.selection_from_day);
-        fromMonth = (TextView) this.customViewFrame.findViewById(R.id.selection_from_month);
-        fromYear = (TextView) this.customViewFrame.findViewById(R.id.selection_from_year);
-        toDay = (TextView) this.customViewFrame.findViewById(R.id.selection_to_day);
-        toMonth = (TextView) this.customViewFrame.findViewById(R.id.selection_to_month);
-        toYear = (TextView) this.customViewFrame.findViewById(R.id.selection_to_year);
+        fromDay = (TextView) this.getCustomView().findViewById(R.id.selection_from_day);
+        fromMonth = (TextView) this.getCustomView().findViewById(R.id.selection_from_month);
+        fromYear = (TextView) this.getCustomView().findViewById(R.id.selection_from_year);
+        toDay = (TextView) this.getCustomView().findViewById(R.id.selection_to_day);
+        toMonth = (TextView) this.getCustomView().findViewById(R.id.selection_to_month);
+        toYear = (TextView) this.getCustomView().findViewById(R.id.selection_to_year);
 
-        calendarFrame = this.customViewFrame.findViewById(R.id.calendar_frame);
+        calendarFrame = this.getCustomView().findViewById(R.id.calendar_frame);
         calendarRange = (DateRangeView) calendarFrame.findViewById(R.id.calendar_range);
         calendarHeader = (TextView) calendarFrame.findViewById(R.id.calendar_header);
         calendarRange.setOnMonthChangeListener(this);
@@ -62,7 +63,7 @@ public class DateRangePickerDialog extends MaterialDialog implements DateRangeVi
             }
         });
 
-        recyclerView = (RecyclerView) this.customViewFrame.findViewById(R.id.recycler);
+        recycler = (RecyclerView) this.getCustomView().findViewById(R.id.recycler);
 
         this.dateRange = builder.dateRange;
         calendarRange.setDateRange(builder.dateRange);

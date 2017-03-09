@@ -16,10 +16,11 @@
 
     <com.urizev.daterangepicker.lib.DateRangeView
         android:id="@+id/range"
-        app:drp_rowHeight="48dp"
+        app:drp_rowHeight="64dp"
         android:background="#FFF"
         app:drp_weekdayLabelTextColor="?android:attr/textColorSecondary"
         app:drp_weekdayLabelTextSize="14sp"
+        app:drp_eventColor="@color/colorEvent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <android.support.v4.view.PagerTitleStrip
